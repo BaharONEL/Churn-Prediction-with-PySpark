@@ -36,7 +36,7 @@ spark = SparkSession.builder \
 sc = spark.sparkContext
 #sc.stop()
 
-spark_df = spark.read.csv(r"C:\Users\Oguz\Desktop\DCMLBC06\HAFTA10\Ders Notları\churn2.csv", header=True, inferSchema=True)
+spark_df = spark.read.csv("churn2.csv", header=True, inferSchema=True)
 ############################
 # Exploratory Data Analysis
 ############################
@@ -100,7 +100,7 @@ spark_df = encoder.fit(spark_df).transform(spark_df)
 spark_df.show(5)
 
 
-# TARGET'ın Tanımlanması
+# Defining TARGET
 
 stringIndexer = StringIndexer(inputCol='EXITED', outputCol='label')
 temp_sdf = stringIndexer.fit(spark_df).transform(spark_df)
@@ -108,7 +108,7 @@ spark_df = temp_sdf.withColumn("label", temp_sdf["label"].cast("integer"))
 spark_df.show(5)
 
 
-# Feature'ların Tanımlanması
+# Defining Features
 
 num_cols = [col[0] for col in spark_df.dtypes if col[1] != 'string']
 num_cols.remove('ROWNUMBER')
